@@ -22,17 +22,12 @@ Requires Obsidian **1.8.7+**. Put `main.js`, `manifest.json` and `styles.css` fr
 - **可选 AI / Optional AI** — 在「增强功能」中选择兼容 API 或桌面端本机 Codex。AI 默认关闭。启用后，问题和按设置选取的小记内容会发给所选服务商。\
   Choose a compatible API or local Codex on desktop under Enhancements. AI is off by default. When enabled, questions and any memo context selected under your settings go to your chosen provider.
 
-## 0.16.5 · Text Reference
+## 0.16.5
 
-1. 安装并启用 [Text Reference](https://github.com/cimuyang/text-reference) **0.14.0+**。
-2. 在「小记设置 → 增强功能」开启「Text Reference 联动」。
-3. 在小记卡片的「···」菜单中选「复制为 Text Reference」，粘贴到同一笔记库的另一篇笔记。
-
-Install and enable [Text Reference](https://github.com/cimuyang/text-reference) **0.14.0+**. Turn on **Text Reference integration** under xiaoji → Enhancements. Choose **Copy as Text Reference** from a memo’s menu and paste into another note in the same vault.
-
-```text
-[[小记/2026-Q4小记.md|这是一条小记。（2026-Q4小记）]]
-```
+- **支持 Text Reference（文字引用）联动。** 安装并启用 Text Reference 0.14.0 或更新版本后，在「小记设置 → 增强功能」打开联动开关。然后在小记卡片的「···」菜单中选择「复制为 Text Reference」，粘贴到同一笔记库的另一篇笔记中，即可显示带完整正文和来源链接的引用。
+- **调整卡片菜单顺序。** 打开原文、复制为 Text Reference、复制正文、在小记中引用、编辑，依次排列。联动开关默认关闭，开启后才显示对应的复制选项。
+- **Added Text Reference integration.** Install and enable Text Reference 0.14.0 or later, then turn on the integration under **xiaoji Settings → Enhancements**. Choose **Copy as Text Reference** from a memo’s **⋯** menu and paste it into another note in the same vault. The reference includes the full memo text and a link to its source.
+- **Reordered the memo menu.** The top actions are now **Open source → Copy as Text Reference → Copy Markdown → Reference in xiaoji → Edit**. The Text Reference action appears when the integration is enabled, which is off by default.
 
 [完整更新记录 / Changelog](CHANGELOG.md)
 
