@@ -8,7 +8,7 @@ import { Repository } from './core/repository';
 import { Conversations } from './core/conversations';
 import { fileForDate, displayDate, timestamp, validateStorageSettings } from './core/dates';
 import { parseMemos } from './core/markdown';
-import { rewriteLinks } from './core/links';
+import { rewriteLinks, textReferenceLink } from './core/links';
 import { hasControlCharacters, loadSettings, normalizeFolder, safeFileName, isChatPath } from './core/settings';
 import { MemoError, type Draft, type FilePort, type Memo, type NavItem, type PluginData, type Settings } from './core/types';
 import { isMessageKey, resolveLanguage, translate, type Locale, type MessageKey } from './i18n';
@@ -532,6 +532,12 @@ export default class XiaojiPlugin extends Plugin {
     return memo.body.split('\n').map(line => '> ' + line).join('\n') + '\n>\n> ' +
       '[' + this.date(memo) + '](' + this.memoLink(memo) + ') · ' + this.sourceLink(memo, sourcePath);
   }
+  async copyTextReference(memo: Memo, document: Document): Promise<void> {
+    const file = this.app.vault.getAbstractFileByPath(memo.path);
+    if (!(file instanceof TFile)) throw new MemoError('textReferenceMissingSource');
+    await this.clipboard(textReferenceLink(file.path, file.basename, memo.body), document);
+  }
+
   async clipboard(value: string, document: Document = window.document, notify = true): Promise<void> {
     try {
       if (!document.defaultView?.navigator.clipboard) throw new Error('Clipboard unavailable');

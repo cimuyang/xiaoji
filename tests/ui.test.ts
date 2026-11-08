@@ -10,6 +10,7 @@ import type { ViewStateResult, WorkspaceLeaf } from 'obsidian';
 import { EditorView } from '@codemirror/view';
 import XiaojiPlugin from '../src/main';
 import { submitMatches } from '../src/ui/submit';
+import { textReferenceLink } from '../src/core/links';
 
 class ResizeMock {
   static instances: ResizeMock[] = [];
@@ -298,8 +299,43 @@ describe('fixed capture workflow', () => {
     const { root, plugin } = await setup(), editor = EditorView.findFromDOM(root.querySelector('.cm-editor')!)!;
     editor.dispatch({ changes: { from: 0, insert: '当前内容' } });
     root.querySelector('.xj-card')!.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true }));
-    Menu.last!.items.find(item => item.title === '引用')!.callback();
+    Menu.last!.items.find(item => item.title === '在小记中引用')!.callback();
     expect(editor.state.doc.toString()).toBe('当前内容\n@' + plugin.repo.records[0]!.id);
+  });
+  it('toggles the Text Reference action and copies the card without editing the source', async () => {
+    const { root, plugin, files } = await setup();
+    const clipboard = vi.fn(async () => undefined);
+    plugin.clipboard = clipboard;
+    plugin.copyTextReference = XiaojiPlugin.prototype.copyTextReference;
+    const before = [...files.data];
+    const openMenu = () => {
+      root.querySelector<HTMLButtonElement>('.xj-card button[aria-label="更多"]')!.click();
+      return Menu.last!.items;
+    };
+    const title = '复制为 Text Reference';
+    expect(openMenu().map(item => item.title)).not.toContain(title);
+    const tab = new XiaojiSettings(plugin.app, plugin);
+    document.body.append(tab.containerEl);
+    tab.display();
+    [...tab.containerEl.querySelectorAll<HTMLButtonElement>('nav button')].find(button => button.textContent === '增强功能')!.click();
+    await flush();
+    expect(tab.containerEl.querySelector('code')?.textContent).toBe('[[小记/2026-Q4小记.md|这是一条小记。（2026-Q4小记）]]');
+    tab.containerEl.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click();
+    await flush();
+    const menu = openMenu();
+    expect(menu.slice(0, 5).map(item => item.title)).toEqual(['打开原文', title, '复制正文', '在小记中引用', '编辑']);
+    menu[1]!.callback();
+    await flush();
+    expect(clipboard).toHaveBeenCalledExactlyOnceWith('[[小记/2610小记.md|好的课堂提问，要给学生留出思考的时间。 #教学/反思（2610小记）]]', document);
+    expect([...files.data]).toEqual(before);
+    tab.containerEl.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click();
+    await flush();
+    expect(openMenu().map(item => item.title)).not.toContain(title);
+    tab.hide();
+  });
+  it('escapes nested wiki syntax and encodes the Markdown link destination', () => {
+    const link = textReferenceLink('小记/2026 Q4(2).md', '2026 Q4(2)', '看 [[主题|别名]]\r\n\r\n![[图.png]]');
+    expect(link).toBe('[看 \\[\\[主题\\|别名\\]\\] !\\[\\[图.png\\]\\]（2026 Q4(2)）](%E5%B0%8F%E8%AE%B0/2026%20Q4%282%29.md)');
   });
   it('seeds only an empty capture with the selected tag and preserves typed content on switching', async () => {
     const { root } = await setup({ navigation: 'sidebar', sidebar: 'open' });
@@ -448,7 +484,7 @@ describe('V2 direct editing and navigation', () => {
     }
     const copy = vi.fn(); plugin.clipboard = copy;
     root.querySelector('.xj-card')!.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true }));
-    const reference = Menu.last!.items.find(item => item.title === '引用')!;
+    const reference = Menu.last!.items.find(item => item.title === '在小记中引用')!;
     await reference.callback();
     expect(root.querySelector('.cm-content')?.textContent).toContain('@' + plugin.repo.records[0]!.id);
     expect(copy).not.toHaveBeenCalled();

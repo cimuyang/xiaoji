@@ -131,7 +131,7 @@ export class CodexClient {
       child.stderr.on('data', () => undefined); // Drain logs; never surface credentials or prompt contents.
       const failed = (): void => { if (this.child === launched) this.disconnect(new MemoError('codexDisconnected')); };
       child.on('error', failed); child.on('exit', failed); child.stdin.on('error', failed);
-      await this.rpc('initialize', { clientInfo: { name: 'xiaoji', title: '小记', version: '0.16.4' } });
+      await this.rpc('initialize', { clientInfo: { name: 'xiaoji', title: '小记', version: '0.16.5' } });
       this.send({ method: 'initialized', params: {} });
       const configuration = record(record(await this.rpc('config/read', { includeLayers: false })).config);
       this.model = typeof configuration.model === 'string' ? configuration.model : '';

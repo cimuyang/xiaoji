@@ -1,7 +1,20 @@
 import type { Nodes } from 'mdast';
 import { parseMarkdown } from './markdown';
+import { MemoError } from './types';
 
 export interface LinkTarget { target: string; label: string; embed: boolean; wiki: boolean; }
+
+export function textReferenceLink(path: string, basename: string, body: string): string {
+  const excerpt = body.trim().replace(/[ \t]*(?:(?:\r\n?|\n)[ \t]*)+/g, ' ');
+  if (!excerpt) throw new MemoError('emptyMemo');
+  if (/[#^]/.test(path)) throw new MemoError('textReferenceUnsupportedPath');
+  const label = excerpt + '（' + basename + '）';
+  const escaped = label.replace(/[\\[\]*_`<>&~%$=|]/g, character => '\\' + character);
+  if (escaped === label && !/[[\]|]/.test(path)) return '[[' + path + '|' + label + ']]';
+  // Text Reference also recognizes native Markdown links with escaped labels.
+  const target = path.split('/').map(part => encodeURIComponent(part).replace(/[()]/g, character => character === '(' ? '%28' : '%29')).join('/');
+  return '[' + escaped + '](' + target + ')';
+}
 
 /** Rewrite only actual Markdown links and wiki links; leave code and unrelated source byte-for-byte intact. */
 export function rewriteLinks(body: string, resolve: (link: LinkTarget) => string | null): string {

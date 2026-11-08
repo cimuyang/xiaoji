@@ -30,7 +30,7 @@ describe('0.16.3 theme and desktop settings', () => {
     const { plugin } = await makeFixture({ aiEnabled: true, aiProvider: 'codex' });
     plugin.inspectCodex = vi.fn(async () => ({ model: 'gpt-6.1-sol', models: [{ id: 'older-model', name: 'Older model' }] }));
     const settings = new XiaojiSettings(plugin.app, plugin); document.body.append(settings.containerEl); settings.display();
-    const tab = [...settings.containerEl.querySelectorAll('nav button')].find(button => button.textContent === 'AI') as HTMLButtonElement;
+    const tab = [...settings.containerEl.querySelectorAll('nav button')].find(button => button.textContent === '增强功能') as HTMLButtonElement;
     tab.click(); await new Promise(resolve => setTimeout(resolve, 0));
     expect(settings.containerEl.querySelector('input[type="password"]')).toBeNull();
     const check = [...settings.containerEl.querySelectorAll('button')].find(button => button.textContent === plugin.t('codexConnect'))!;
@@ -45,7 +45,7 @@ describe('0.16.3 theme and desktop settings', () => {
     let signal!: AbortSignal;
     plugin.verifyCodexModel = vi.fn(async current => { signal = current; await new Promise<void>((_resolve, reject) => current.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), { once: true })); });
     const settings = new XiaojiSettings(plugin.app, plugin); document.body.append(settings.containerEl); settings.display();
-    ([...settings.containerEl.querySelectorAll('nav button')].find(button => button.textContent === 'AI') as HTMLButtonElement).click();
+    ([...settings.containerEl.querySelectorAll('nav button')].find(button => button.textContent === '增强功能') as HTMLButtonElement).click();
     await new Promise(resolve => setTimeout(resolve, 0));
     const advanced = settings.containerEl.querySelector('details')!;
     const inputs = advanced.querySelectorAll('input'); const model = inputs[inputs.length - 1]!;

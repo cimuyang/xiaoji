@@ -845,12 +845,15 @@ export class MemoView extends ItemView {
   private memoMenu(memo: Memo, event: MouseEvent): void {
     const p = this.plugin;
     const menu = new Menu();
-    menu.addItem(item => item.setTitle(p.t('edit')).setIcon('pencil').onClick(() => this.run(() => this.editMemo(memo))));
+    menu.addItem(item => item.setTitle(p.t('openSource')).setIcon('file-text').onClick(() => this.run(() => p.openSource(memo))));
+    if (p.prefs.textReferenceEnabled) {
+      menu.addItem(item => item.setTitle(p.t('copyTextReference')).setIcon('link').onClick(() => this.run(() => p.copyTextReference(memo, this.root.ownerDocument))));
+    }
     menu.addItem(item => item.setTitle(p.t('copy')).setIcon('copy').onClick(() => this.run(() => p.clipboard(memo.body, this.root.ownerDocument))));
     menu.addItem(item => item.setTitle(p.t('citeMemo')).setIcon('at-sign').onClick(() => {
       this.composer?.appendLine('@' + memo.id); this.focusComposer();
     }));
-    menu.addItem(item => item.setTitle(p.t('openSource')).setIcon('file-text').onClick(() => this.run(() => p.openSource(memo))));
+    menu.addItem(item => item.setTitle(p.t('edit')).setIcon('pencil').onClick(() => this.run(() => this.editMemo(memo))));
     menu.addSeparator();
     menu.addItem(item => item.setTitle(p.t(memo.pinned ? 'unpin' : 'pin')).setIcon('pin').onClick(() => this.run(async () => { await p.repo.setPinned(memo, !memo.pinned); this.restoreScroll = 0; await p.refresh(); this.scroller.scrollTop = 0; if (!memo.pinned) new Notice(p.t('pinDone')); })));
     menu.addItem(item => item.setTitle(p.t(memo.archived ? 'unarchive' : 'doArchive')).setIcon('archive').onClick(() => this.run(async () => { await p.repo.setArchived(memo, !memo.archived); await p.refresh(); })));

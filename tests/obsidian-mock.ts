@@ -228,17 +228,17 @@ class Slider {
   onChange(callback: (value: number) => unknown): this { this.sliderEl.addEventListener('input', () => callback(Number(this.sliderEl.value))); return this; }
 }
 export class Setting {
-  settingEl: HTMLElement; nameEl: HTMLElement; infoEl: HTMLElement; private description: HTMLElement; private control: HTMLElement;
+  settingEl: HTMLElement; nameEl: HTMLElement; infoEl: HTMLElement; descEl: HTMLElement; private control: HTMLElement;
   constructor(parent: HTMLElement) {
     this.settingEl = document.createElement('div'); this.settingEl.className = 'setting-item'; parent.append(this.settingEl);
     const info = document.createElement('div'); info.className = 'setting-item-info'; this.settingEl.append(info);
     this.infoEl = info;
     this.nameEl = document.createElement('div'); this.nameEl.className = 'setting-item-name'; info.append(this.nameEl);
-    this.description = document.createElement('div'); this.description.className = 'setting-item-description'; info.append(this.description);
+    this.descEl = document.createElement('div'); this.descEl.className = 'setting-item-description'; info.append(this.descEl);
     this.control = document.createElement('div'); this.control.className = 'setting-item-control'; this.settingEl.append(this.control);
   }
   setName(value: string): this { this.nameEl.textContent = value; return this; }
-  setDesc(value: string): this { this.description.textContent = value; return this; }
+  setDesc(value: string): this { this.descEl.textContent = value; return this; }
   addText(callback: (control: TextControl) => unknown): this { callback(new TextControl(this.control)); return this; }
   addTextArea(callback: (control: TextAreaControl) => unknown): this { callback(new TextAreaControl(this.control)); return this; }
   addDropdown(callback: (control: Dropdown) => unknown): this { callback(new Dropdown(this.control)); return this; }

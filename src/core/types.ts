@@ -61,6 +61,7 @@ export interface Settings {
   nav: NavItem[];
   tagOrder: string[];
   reviewEnabled: boolean;
+  textReferenceEnabled: boolean;
   aiEnabled: boolean;
   aiProvider: 'api' | 'codex';
   codexPath: string;

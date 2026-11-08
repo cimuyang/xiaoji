@@ -56,7 +56,7 @@ describe('automatic setting commits', () => {
     input(folder, '成功目录'); folder.dispatchEvent(new Event('blur')); await tick(); expect(write).toHaveBeenCalledTimes(2); expect(plugin.prefs.folder).toBe('成功目录');
   });
   it('saves API keys without an extra button, masks the input, and clearing cancels a queued replacement', async () => {
-    vi.useFakeTimers(); const { plugin, row, go } = await settings({ aiEnabled: true }); await go('AI');
+    vi.useFakeTimers(); const { plugin, row, go } = await settings({ aiEnabled: true }); await go('增强功能');
     const set = vi.spyOn(plugin, 'setApiKey'), keyRow = row('API 密钥'), field = keyRow.querySelector('input')!;
     expect(field.type).toBe('password'); input(field, 'synthetic-key'); await vi.advanceTimersByTimeAsync(400); expect(set).toHaveBeenLastCalledWith('synthetic-key');
     input(field, 'replacement'); keyRow.querySelector<HTMLButtonElement>('button[title="清除密钥"]')!.click(); await tick(); await vi.advanceTimersByTimeAsync(500); expect(set).toHaveBeenLastCalledWith('');
@@ -65,13 +65,13 @@ describe('automatic setting commits', () => {
   it('reveals an existing secret only on request and never resurrects a pending cleared key', async () => {
     const { plugin, row, go } = await settings({ aiEnabled: true }); let secret = 'synthetic-stored';
     plugin.apiKey = () => secret; plugin.setApiKey = value => { secret = value; };
-    await go('AI'); const key = row('API 密钥'), field = key.querySelector('input')!;
+    await go('增强功能'); const key = row('API 密钥'), field = key.querySelector('input')!;
     expect(field.value).toBe(''); key.querySelector<HTMLButtonElement>('button[title="显示密钥"]')!.click(); await tick(); expect(field.value).toBe('synthetic-stored'); expect(field.type).toBe('text');
     key.querySelector<HTMLButtonElement>('button[title="隐藏密钥"]')!.click(); await tick();
     input(field, ''); key.querySelector<HTMLButtonElement>('button[title="显示密钥"]')!.click(); await tick(); expect(field.value).toBe(''); expect(secret).toBe('');
   });
   it('rejects an invalid API endpoint and preserves a valid one', async () => {
-    const { plugin, row, go } = await settings({ aiEnabled: true }); await go('AI'); const endpoint = row('兼容服务地址').querySelector('input')!, before = plugin.prefs.aiBaseUrl;
+    const { plugin, row, go } = await settings({ aiEnabled: true }); await go('增强功能'); const endpoint = row('兼容服务地址').querySelector('input')!, before = plugin.prefs.aiBaseUrl;
     input(endpoint, 'file:///secret'); endpoint.dispatchEvent(new Event('blur')); await tick(); expect(plugin.prefs.aiBaseUrl).toBe(before); expect(endpoint.getAttribute('aria-invalid')).toBe('true');
   });
   it('keeps one capture row with its recorder and global scope toggle', async () => {

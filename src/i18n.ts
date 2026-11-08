@@ -96,7 +96,7 @@ const strings = {
   queryFailed: ['无法完整读取小记，已取消本次查询，避免给出不准确的统计。', 'Could not read all memos. Query cancelled to avoid inaccurate statistics.'],
 
   submitKey: ['提交快捷键', 'Submit shortcut'], quickPin: ['快速记录窗口默认置顶', 'Pin quick capture by default'],
-  addTask: ['添加待办', 'Add task'], citeMemo: ['引用', 'Insert reference'], undoDelete: ['撤销', 'Undo'],
+  addTask: ['添加待办', 'Add task'], citeMemo: ['在小记中引用', 'Reference in xiaoji'], undoDelete: ['撤销', 'Undo'],
   chatHistory: ['历史对话', 'Conversations'], newChat: ['新对话', 'New conversation'],
   deleteChat: ['删除对话', 'Delete conversation'], deleteTurn: ['删除本轮', 'Delete this turn'],
   renameChat: ['重命名对话', 'Rename conversation'],
@@ -168,7 +168,7 @@ const strings = {
   aiEmpty: ['服务没有返回回答内容。', 'The service returned no answer.'],
   aiTimeout: ['请求超时，已停止等待。', 'Request timed out.'],
 
-  storage: ['存储', 'Storage'], appearance: ['界面', 'Interface'], enhancements: ['AI', 'AI'],
+  storage: ['存储', 'Storage'], appearance: ['界面', 'Interface'], enhancements: ['增强功能', 'Enhancements'],
   general: ['通用', 'General'], language: ['界面语言', 'Language'], auto: ['跟随 Obsidian', 'Follow Obsidian'],
   storageHint: ['切换目录会切换显示的小记与回收站；原文件保留。其他存储更改仅影响后续写入。', 'Changing the folder switches the visible memos and recycle bin; original files remain. Other storage changes affect future writes.'],
   memoFolder: ['小记目录', 'Memo folder'], period: ['文件分卷', 'File period'],
@@ -192,6 +192,10 @@ const strings = {
   reviewHint: ['开启后显示在导航中，可设为常用入口。', 'Available in navigation when enabled; can be a favorite.'],
 
   aiHint: ['开启后在页面内提问。先发送问题规划检索，再发送相关小记作为证据；不读取附件或回收站。', 'Ask within the page. Your question is sent for planning, then relevant memo text as evidence. Attachments and the recycle bin are excluded.'],
+  textReferenceIntegration: ['Text Reference 联动', 'Text Reference integration'],
+  textReferenceHint: ['请先在「第三方插件」中安装并启用 Text Reference（0.14.0 或更新版本）。开启联动后，在小记卡片的「···」菜单中选择「复制为 Text Reference」，再粘贴到同一笔记库的另一篇笔记。引用包含完整正文和来源文件名。', 'Install and enable Text Reference 0.14.0 or later under Community plugins. With this integration on, choose “Copy as Text Reference” from a memo’s menu and paste it into another note in the same vault. The reference includes the full text and source file name.'],
+  textReferencePluginPage: ['查看插件', 'View plugin'],
+  copyTextReference: ['复制为 Text Reference', 'Copy as Text Reference'],
   endpoint: ['兼容服务地址', 'Compatible API endpoint'], model: ['模型名称', 'Model name'],
   apiKey: ['API 密钥', 'API key'], secretSaved: ['密钥由 Obsidian 密钥存储管理；不会写入小记或插件配置。', 'Stored in Obsidian secret storage, never in memos or plugin settings.'],
   sessionSecret: ['当前 Obsidian 未提供密钥存储，密钥仅在本次运行中保留。', 'Secret storage is unavailable. The key is kept only for this session.'],
@@ -208,6 +212,8 @@ const strings = {
   invalidTimestamp: ['时间戳无效，请检查原文。', 'Invalid timestamp. Inspect the source.'],
   invalidTag: ['标签无效，请输入不含空格的原生标签。', 'Enter a valid native tag without spaces.'],
   emptyMemo: ['请先写下一点内容。', 'Write something first.'],
+  textReferenceMissingSource: ['找不到这条小记的来源文件。请刷新小记后重试。', 'The source file is missing. Refresh xiaoji and try again.'],
+  textReferenceUnsupportedPath: ['Text Reference 无法识别包含 # 或 ^ 的来源路径。请重命名来源文件或目录后重试。', 'Text Reference cannot recognize source paths containing # or ^. Rename the source file or folder and try again.'],
   conflict: ['原文已改变或时间戳重复。你的草稿已保留，请打开原文核对后再保存。', 'The source changed or its timestamp is duplicated. Your draft is kept; inspect the source before saving.'],
   duplicate: ['当前时间戳重复，请稍后重试。原内容未被覆盖。', 'Duplicate timestamp. Try again; no existing content was overwritten.'],
   invalidMarkdown: ['无法确认记录边界，已取消写入以保护原文。', 'Record boundaries could not be verified. Write cancelled to protect the source.'],

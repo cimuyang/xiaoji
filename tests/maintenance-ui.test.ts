@@ -85,7 +85,7 @@ describe('storage maintenance actions', () => {
 
   it('keeps the system prompt and retrieval limits inside a closed optional AI section', async () => {
     const { tab } = await settingTab({ aiEnabled: true });
-    [...tab.containerEl.querySelectorAll<HTMLButtonElement>('nav button')].find(button => button.textContent === 'AI')!.click();
+    [...tab.containerEl.querySelectorAll<HTMLButtonElement>('nav button')].find(button => button.textContent === '增强功能')!.click();
     await vi.waitFor(() => expect(tab.containerEl.querySelector('textarea.xj-system-prompt')).not.toBeNull());
     const advanced = tab.containerEl.querySelector<HTMLDetailsElement>('details.xj-settings-advanced')!;
     expect(advanced.open).toBe(false); expect(advanced.querySelector('summary')?.textContent).toBe('提示词与上下文');

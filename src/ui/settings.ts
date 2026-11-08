@@ -264,6 +264,15 @@ export class XiaojiSettings extends PluginSettingTab {
 
   private enhancements(panel: HTMLElement): void {
     const p = this.plugin;
+    const reference = new Setting(panel).setName(p.t('textReferenceIntegration')).setDesc(p.t('textReferenceHint'))
+      .addToggle(toggle => toggle.setValue(p.prefs.textReferenceEnabled)
+        .onChange(value => this.change({ textReferenceEnabled: value }, true)));
+    reference.descEl.createEl('br');
+    element(reference.descEl, 'code', '', p.locale === 'zh'
+      ? '[[小记/2026-Q4小记.md|这是一条小记。（2026-Q4小记）]]'
+      : '[[Memos/2026-Q4.md|This is a memo.（2026-Q4）]]');
+    reference.descEl.createEl('br');
+    element(reference.descEl, 'a', 'external-link', p.t('textReferencePluginPage')).href = 'https://github.com/cimuyang/text-reference';
     new Setting(panel).setName('AI').setDesc(p.t('aiHint')).addToggle(toggle =>
       toggle.setValue(p.prefs.aiEnabled).onChange(value => this.change({ aiEnabled: value }, true)));
     if (!p.prefs.aiEnabled) return;
